@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Subtitle Video Selector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    video {
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 20px;
+    }
+    .subtitle-line {
+      padding: 6px;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+    }
+    .subtitle-line.selected {
+      background-color: #d1ffd1;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Video Subtitle Highlighter</h2>
+
+  <input type="file" id="videoInput" accept="video/*"><br><br>
+  <input type="file" id="subtitleInput" accept=".srt"><br><br>
+
+  <video id="video" controls></video>
+
+  <div id="subtitleContainer"></div>
+
+  <button onclick="showSelected()">Show Selected Timestamps</button>
+
+  <script>
+    const video = document.getElementById("video");
+    const videoInput = document.getElementById("videoInput");
+    const subtitleInput = document.getElementById("subtitleInput");
+    const subtitleContainer = document.getElementById("subtitleContainer");
+    let subtitleData = [];
+
+    videoInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      video.src = URL.createObjectURL(file);
+    });
+
+    subtitleInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function () {
+        parseSRT(reader.result);
+        displaySubtitles();
+      };
+      reader.readAsText(file);
+    });
+
+    function parseSRT(data) {
+      subtitleData = [];
+      const blocks = data.split("\n\n");
+      for (let block of blocks) {
+        const lines = block.split("\n");
+        if (lines.length >= 3) {
+          const times = lines[1].split(" --> ");
+          subtitleData.push({
+            start: times[0].trim(),
+            end: times[1].trim(),
+            text: lines.slice(2).join(" "),
+            selected: false
+          });
+        }
+      }
+    }
+
+    function displaySubtitles() {
+      subtitleContainer.innerHTML = '';
+      subtitleData.forEach((sub, index) => {
+        const div = document.createElement("div");
+        div.className = "subtitle-line";
+        div.textContent = `[${sub.start}] ${sub.text}`;
+        div.addEventListener("click", () => {
+          sub.selected = !sub.selected;
+          div.classList.toggle("selected");
+        });
+        subtitleContainer.appendChild(div);
+      });
+    }
+
+    function showSelected() {
+      const selectedSubs = subtitleData.filter(sub => sub.selected);
+      if (selectedSubs.length === 0) {
+        alert("No subtitle lines selected.");
+        return;
+      }
+      console.log("Selected subtitles:");
+      selectedSubs.forEach(sub => {
+        console.log(`${sub.start} --> ${sub.end} : ${sub.text}`);
+      });
+    }
+  </script>
+
+</body>
+</html>

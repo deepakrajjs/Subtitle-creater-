@@ -1,20 +1,4 @@
 # Subtitle-creater
-To create a great README for your Subtitle-creater project, you'll want to include several standard sections:
-
-1. Project Title & Description  
-2. Features  
-3. Demo or Screenshots (if possible)  
-4. Installation Instructions  
-5. Usage  
-6. Contributing  
-7. License  
-8. Contact  
-
-Here’s a template you can copy, edit, and expand as needed:
-
----
-
-# Subtitle-creater
 
 Subtitle-creater is a web-based tool for generating subtitles for your videos quickly and easily. The project is built with HTML and designed to be user-friendly, making subtitle creation accessible to everyone.
 

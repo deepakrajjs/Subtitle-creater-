@@ -1,4 +1,4 @@
-# Subtitle-creater
+# itz just a sample Subtitle-creater
 
 Subtitle-creater is a web-based tool for generating subtitles for your videos quickly and easily. The project is built with HTML and designed to be user-friendly, making subtitle creation accessible to everyone.
 
